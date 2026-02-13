@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+  <title>Our Moments · memory lane</title>
+  <!-- Bootstrap 5 + Icons + Google Fonts (romantic & clean) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <!-- custom soft touch -->
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(145deg, #fff9f9 0%, #ffeef0 100%);
+      color: #4a2e2e;
+      margin: 0;
+      padding: 0;
+    }
+    h1, h2, h3, h4, .navbar-brand, .display-6 {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+    .navbar {
+      background: rgba(255, 245, 245, 0.92) !important;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 4px 20px rgba(220, 80, 100, 0.05);
+    }
+    .navbar-brand i {
+      color: #c4455c;
+      margin-right: 6px;
+    }
+    .hero-section {
+      background: radial-gradient(circle at 10% 30%, #ffe9e9, #ffdbdb);
+      padding: 4rem 2rem;
+      border-radius: 0 0 40px 40px;
+      box-shadow: 0 6px 18px rgba(200, 100, 120, 0.1);
+    }
+    .hero-title {
+      font-size: 3.2rem;
+      color: #6d3b3b;
+      text-shadow: 2px 2px 8px rgba(255, 220, 220, 0.6);
+    }
+    .memory-card {
+      border: none;
+      border-radius: 28px;
+      background-color: #ffffff;
+      transition: all 0.25s ease-in-out;
+      box-shadow: 0 8px 18px rgba(170, 100, 110, 0.08);
+      overflow: hidden;
+    }
+    .memory-card:hover {
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 0 20px 30px rgba(190, 80, 100, 0.15);
+    }
+    .card-img-top {
+      height: 200px;
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: 0.2s;
+    }
+    .memory-icon {
+      font-size: 5rem;
+      color: #fff;
+      text-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(2px);
+      padding: 12px;
+      border-radius: 50%;
+    }
+    .btn-memory {
+      background: #ffd3d3;
+      border: 1px solid #ffb3b3;
+      color: #6d3b3b;
+      border-radius: 40px;
+      padding: 8px 18px;
+      font-weight: 500;
+      transition: 0.2s;
+    }
+    .btn-memory:hover {
+      background: #ffbebe;
+      border-color: #c4455c;
+      color: #4a1e1e;
+    }
+    .badge-soft {
+      background-color: #ffebeb;
+      color: #b14b4b;
+      font-weight: 400;
+      padding: 6px 14px;
+      border-radius: 30px;
+      font-size: 0.8rem;
+    }
+    footer {
+      background: #ffe3e3;
+      color: #794949;
+      border-top: 2px solid #ffcece;
+    }
+    footer i {
+      color: #c4455c;
+    }
+    .modal-content {
+      border-radius: 30px;
+      border: none;
+      background: #fffbfb;
+    }
+    .modal-header {
+      border-bottom: 2px dashed #fbc4c4;
+    }
+    .heart-separator {
+      width: 60px;
+      height: 2px;
+      background: #ffa5a5;
+      margin: 20px auto;
+      opacity: 0.6;
+    }
+    .memory-count-badge {
+      background: white;
+      padding: 8px 24px;
+      border-radius: 60px;
+      box-shadow: 0 4px 12px #ffd6d6;
+      display: inline-block;
+      color: #b3475c;
+    }
+  </style>
+</head>
+<body class="d-flex flex-column min-vh-100">
+
+  <!-- ===== SOFT NAVBAR ===== -->
+  <nav class="navbar navbar-expand-lg navbar-light py-3">
+    <div class="container">
+      <a class="navbar-brand fw-bold fs-3" href="#">
+        <i class="bi bi-heart-fill"></i> Moments with you
+      </a>
+      <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="#gallery"><i class="bi bi-images me-1"></i>Memories</a></li>
+          <li class="nav-item"><a class="nav-link" href="#footer"><i class="bi bi-envelope-heart me-1"></i>for you</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ===== HERO – OUR STORY ===== -->
+  <section class="hero-section text-center text-dark bg-opacity-10 mx-3 mx-md-5 mt-3 mb-4">
+    <div class="container">
+      <i class="bi bi-suit-heart-fill" style="font-size: 3.2rem; color: #c4455c; opacity: 0.8;"></i>
+      <h1 class="hero-title display-3 fw-bold">our journey, framed</h1>
+      <p class="fs-5 col-lg-8 mx-auto" style="color: #5e3a3a;">every laugh, every glance — a collection of us.<br> i built this little world for our memories. 💌</p>
+      <div class="mt-4">
+        <a href="#gallery" class="btn btn-lg rounded-pill px-5 py-3 shadow-sm" style="background: #c4455c; color: white; border: none;">✨ explore moments</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== MEMORY GALLERY ===== -->
+  <div id="gallery" class="container my-5 pt-3">
+    <div class="d-flex flex-wrap align-items-center justify-content-between mb-5">
+      <h2 class="display-6 fw-bold" style="color: #653b3b;"><i class="bi bi-camera me-3" style="color: #c4455c;"></i> memory archive</h2>
+      <span class="memory-count-badge fw-semibold"><i class="bi bi-heart me-1"></i> <span id="memory-count">0</span> treasured moments</span>
+    </div>
+
+    <!-- Bootstrap grid with moments (cards) – each moment card is a precious tile -->
+    <div class="row g-4" id="moment-grid">
+      <!-- card 1 : beach day -->
+      <div class="col-6 col-md-4 col-lg-3 moment-card-col">
+        <div class="card memory-card h-100" data-memory-id="1">
+          <div class="card-img-top" style="background-color: #ffd9d9;">
+            <i class="bi bi-umbrella-fill memory-icon" style="color: #ff7a7a;"></i>
+          </div>
+          <div class="card-body d-flex flex-column">
+            <span class="badge-soft align-self-start mb-2"><i class="bi bi-calendar-heart me-1"></i>September 25, 2024</span>
+            <h5 class="card-title fw-bold fs-5">The Start</h5>
+            <p class="card-text small" style="color: #5f4b4b;">Holding, silent, until I let my heart talk</p>
+            <button class="btn btn-memory mt-3 w-100" 
+                    data-bs-toggle="modal" 
+                    data-bs-target="#memoryModal"
+                    data-memory-title="sunset beach"
+                    data-memory-story="We drove for two hours, just to catch the sunset. You brought strawberries and a blanket. The sky turned lavender and peach. We talked about childhood dreams and didn’t want to leave. I took your photo when you weren’t looking — your smile still glows.">
+              <i class="bi bi-arrow-right-circle me-1"></i> relive moment
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- card 2 : birthday surprise -->
+      <div class="col-6 col-md-4 col-lg-3 moment-card-col">
+        <div class="card memory-card h-100">
+          <div class="card-img-top" style="background-color: #d9e6ff;">
+            <i class="bi bi-gift-fill memory-icon" style="color: #5f9ea0;"></i>
+          </div>
+          <div class="card-body d-flex flex-column">
+            <span class="badge-soft align-self-start mb-2"><i class="bi bi-calendar-heart me-1"></i> sept 22, 2023</span>
+            <h5 class="card-title fw-bold fs-5">birthday morning</h5>
+            <p class="card-text small">surprise breakfast in bed + hand-lettered card.</p>
+            <button class="btn btn-memory mt-3 w-100"
+                    data-bs-toggle="modal"
+                    data-bs-target="#memoryModal"
+                    data-memory-title="birthday morning"
+                    data-memory-story="You thought I forgot. But I woke up at 5am to bake your favorite cinnamon rolls. I put a tiny candle on top and tiptoed to your room. Your sleepy smile was the best gift. We ate them on the balcony, still in pajamas.">
+              <i class="bi bi-arrow-right-circle me-1"></i> relive moment
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- card 3 : mountain hike -->
+      <div class="col-6 col-md-4 col-lg-3 moment-card-col">
+        <div class="card memory-card h-100">
+          <div class="card-img-top" style="background-color: #e0f0d9;">
+            <i class="bi bi-tree-fill memory-icon" style="color: #56855a;"></i>
+          </div>
+          <div class="card-body d-flex flex-column">
+            <span class="badge-soft align-self-start mb-2"><i class="bi bi-calendar-heart me-1"></i> oct 5, 2023</span>
+            <h5 class="card-title fw-bold fs-5">misty hike</h5>
+            <p class="card-text small">we got lost, but found the best viewpoint.</p>
+            <button class="btn btn-memory mt-3 w-100"
+                    data-bs-toggle="modal"
+                    data-bs-target="#memoryModal"
+                    data-memory-title="misty hike"
+                    data-memory-story="The trail was muddier than expected. You held my hand the whole way. At the clearing, fog covered the valley — but we sat on a wet log, shared a granola bar, and named the clouds. It felt like our own secret world.">
+              <i class="bi bi-arrow-right-circle me-1"></i> relive moment
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- card 4 : coffee date -->
+      <div class="col-6 col-md-4 col-lg-3 moment-card-col">
+        <div class="card memory-card h-100">
+          <div class="card-img-top" style="background-color: #f9e1c2;">
+            <i class="bi bi-cup-fill memory-icon" style="color: #b08968;"></i>
+          </div>
+          <div class="card-body d-flex flex-column">
+            <span class="badge-soft align-self-start mb-2"><i class="bi bi-calendar-heart me-1"></i> nov 12, 2023</span>
+            <h5 class="card-title fw-bold fs-5">rainy coffee</h5>
+            <p class="card-text small">hid from rain in that tiny bookstore-café.</p>
+            <button class="btn btn-memory mt-3 w-100"
+                    data-bs-toggle="modal"
+                    data-bs-target="#memoryModal"
+                    data-memory-title="rainy coffee"
+                    data-memory-story="We ducked inside when the downpour started. You ordered a cappuccino, I got chai. We found a novel on the shelf and read passages to each other. Three hours disappeared. Outside, the world was blurred; inside, only us.">
+              <i class="bi bi-arrow-right-circle me-1"></i> relive moment
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- card 5 : concert night -->
+      <div class="col-6 col-md-4 col-lg-3 moment-card-col">
+        <div class="card memory-card h-100">
+          <div class="card-img-top" style="background-color: #ecd9ff;">
+            <i class="bi bi-music-note-beamed memory-icon" style="color: #9b6db7;"></i>
+          </div>
+          <div class="card-body d-flex flex-column">
+            <span class="badge-soft align-self-start mb-2"><i class="bi bi-calendar-heart me-1"></i> dec 3, 2023</span>
+            <h5 class="card-title fw-bold fs-5">under the strings</h5>
+            <p class="card-text small">indie band, we danced in the back row.</p>
+            <button class="btn btn-memory mt-3 w-100"
+                    data-bs-toggle="modal"
+                    data-bs-target="#memoryModal"
+                    data-memory-title="under the strings"
+                    data-memory-story="The guitarist had a flower in her hair. You pulled me close during the slow song — we weren’t great dancers but we didn’t care. The bass vibrated through my chest. I remember the fairy lights and your hand in mine.">
+              <i class="bi bi-arrow-right-circle me-1"></i> relive moment
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- card 6 : new year's eve -->
+      <div class="col-6 col-md-4 col-lg-3 moment-card-col">
+        <div class="card memory-card h-100">
+          <div class="card-img-top" style="background-color: #ffe5b4;">
+            <i class="bi bi-stars memory-icon" style="color: #d4af37;"></i>
+          </div>
+          <div class="card-body d-flex flex-column">
+            <span class="badge-soft align-self-start mb-2"><i class="bi bi-calendar-heart me-1"></i> dec 31, 2023</span>
+            <h5 class="card-title fw-bold fs-5">midnight kiss</h5>
+            <p class="card-text small">rooftop fireworks, glitter on your coat.</p>
+            <button class="btn btn-memory mt-3 w-100"
+                    data-bs-toggle="modal"
+                    data-bs-target="#memoryModal"
+                    data-memory-title="midnight kiss"
+                    data-memory-story="We climbed to the roof with paper cups of sparkling cider. The city exploded in color. You had silver glitter on your cheek. At midnight, we kissed — and it wasn’t just new year, it was the start of everything.">
+              <i class="bi bi-arrow-right-circle me-1"></i> relive moment
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- card 7 : weekend getaway -->
+      <div class="col-6 col-md-4 col-lg-3 moment-card-col">
+        <div class="card memory-card h-100">
+          <div class="card-img-top" style="background-color: #ffe0f0;">
+            <i class="bi bi-house-heart-fill memory-icon" style="color: #d66b7c;"></i>
+          </div>
+          <div class="card-body d-flex flex-column">
+            <span class="badge-soft align-self-start mb-2"><i class="bi bi-calendar-heart me-1"></i> feb 14, 2024</span>
+            <h5 class="card-title fw-bold fs-5">cabin stay</h5>
+            <p class="card-text small">fireplace, board games, no phones.</p>
+            <button class="btn btn-memory mt-3 w-100"
+                    data-bs-toggle="modal"
+                    data-bs-target="#memoryModal"
+                    data-memory-title="cabin stay"
+                    data-memory-story="We rented the tiniest cabin. You made hot chocolate and we played scrabble by the fire. I let you win. At night, we sat on the porch wrapped in one blanket, counting stars. No service, no distractions — just us.">
+              <i class="bi bi-arrow-right-circle me-1"></i> relive moment
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- card 8 : anniversary -->
+      <div class="col-6 col-md-4 col-lg-3 moment-card-col">
+        <div class="card memory-card h-100">
+          <div class="card-img-top" style="background-color: #ffd0dd;">
+            <i class="bi bi-heart-fill memory-icon" style="color: #c4455c;"></i>
+          </div>
+          <div class="card-body d-flex flex-column">
+            <span class="badge-soft align-self-start mb-2"><i class="bi bi-calendar-heart me-1"></i> apr 18, 2024</span>
+            <h5 class="card-title fw-bold fs-5">one year</h5>
+            <p class="card-text small">picnic at the spot we first met.</p>
+            <button class="btn btn-memory mt-3 w-100"
+                    data-bs-toggle="modal"
+                    data-bs-target="#memoryModal"
+                    data-memory-title="one year"
+                    data-memory-story="We went back to the park bench. Same bench, but everything else had changed. You made a playlist of 'our year' and we listened with headphones sharing earbuds. You gave me a tiny box — not a ring, but a compass. 'so we always find each other.'">
+              <i class="bi bi-arrow-right-circle me-1"></i> relive moment
+            </button>
+          </div>
+        </div>
+      </div>
+    </div> <!-- row end -->
+    
+    <div class="heart-separator"></div>
+    <p class="text-center text-muted mt-4 fst-italic" style="font-size: 1.1rem;">💭 each card holds a story — click "relive moment" to open the memory.</p>
+  </div>
+
+  <!-- ===== MODAL – MEMORY DETAIL ===== (Bootstrap 5) -->
+  <div class="modal fade" id="memoryModal" tabindex="-1" aria-labelledby="memoryModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header border-0" style="background: #ffeaea;">
+          <h4 class="modal-title fw-bold" id="memoryModalLabel" style="color: #6d3b3b;">
+            <i class="bi bi-heart-fill me-2" style="color: #c4455c;"></i> memory
+          </h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body p-4">
+          <div class="text-center mb-3">
+            <i class="bi bi-camera fs-1" style="color: #c07a7a;"></i>
+          </div>
+          <h3 class="text-center fw-bold" id="memoryModalTitle">beach sunset</h3>
+          <p class="mt-4 px-2" id="memoryModalStory" style="line-height: 1.8; color: #4f3737;">memory story will appear here...</p>
+        </div>
+        <div class="modal-footer border-0 justify-content-center">
+          <button type="button" class="btn btn-memory px-5" data-bs-dismiss="modal">
+            <i class="bi bi-heart"></i> close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== FOOTER – for my love ===== -->
+  <footer id="footer" class="mt-auto text-center py-5">
+    <div class="container">
+      <i class="bi bi-suit-heart-fill" style="font-size: 2rem; color: #c4455c;"></i>
+      <p class="mt-3 fs-5 fw-light" style="letter-spacing: 1.5px;">made for you</p>
+      <p class="mt-3 mb-0">I love you</p>
+      <div class="mt-3 text-muted small">
+        <i class="bi bi-dot"></i> replace the icons, photos & stories — this is our canvas <i class="bi bi-dot"></i>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    (function() {
+      "use strict";
+
+      const memoryCards = document.querySelectorAll('.moment-card-col');
+      const memoryCountSpan = document.getElementById('memory-count');
+      if (memoryCountSpan) {
+        memoryCountSpan.textContent = memoryCards.length;
+      }
+
+      // ---------- 2. dynamic modal content using Bootstrap 5 event ----------
+      const memoryModal = document.getElementById('memoryModal');
+      if (memoryModal) {
+        memoryModal.addEventListener('show.bs.modal', function(event) {
+          // Button that triggered the modal
+          const button = event.relatedTarget;
+          
+          // Extract info from data-* attributes
+          const title = button.getAttribute('data-memory-title');
+          const story = button.getAttribute('data-memory-story');
+          
+          // Update the modal's content
+          const modalTitle = memoryModal.querySelector('#memoryModalTitle');
+          const modalStory = memoryModal.querySelector('#memoryModalStory');
+          
+          if (modalTitle) modalTitle.textContent = title || 'our memory';
+          if (modalStory) modalStory.textContent = story || 'a sweet moment we shared.';
+        });
+      }
+
+      // ---------- 3. optional: smooth scroll for "explore moments" ----------
+      const exploreBtn = document.querySelector('a[href="#gallery"]');
+      if (exploreBtn) {
+        exploreBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          document.querySelector('#gallery')?.scrollIntoView({ behavior: 'smooth' });
+        });
+      }
+      
+    })();
+  </script>
+
+  <!-- tiny extra for bootstrap icons and manual nav smooth -->
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+    .navbar-nav .nav-link {
+      font-weight: 400;
+      color: #6d3b3b !important;
+      border-radius: 40px;
+      padding: 8px 20px;
+      transition: 0.2s;
+    }
+    .navbar-nav .nav-link:hover {
+      background: #ffdbdb;
+    }
+  </style>
+</body>
+</html>
