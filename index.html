@@ -144,6 +144,11 @@
           <li class="nav-item"><a class="nav-link" href="#footer"><i class="bi bi-envelope-heart me-1"></i>for you</a></li>
         </ul>
       </div>
+      <div class="d-flex align-items-center ms-3">
+        <button id="addMemoryBtn" class="btn btn-outline-danger rounded-pill" data-bs-toggle="modal" data-bs-target="#addMemoryModal">
+          <i class="bi bi-upload me-1"></i> Add
+        </button>
+      </div>
     </div>
   </nav>
 
@@ -165,6 +170,35 @@
       <h2 class="display-6 fw-bold" style="color: #653b3b;"><i class="bi bi-camera me-3" style="color: #c4455c;"></i> memory archive</h2>
       <span class="memory-count-badge fw-semibold"><i class="bi bi-heart me-1"></i> <span id="memory-count">0</span> treasured moments</span>
     </div>
+
+    <!-- Template for memory cards (used to create new entries) -->
+    <template id="memory-template">
+      <div class="col-6 col-md-4 col-lg-3 moment-card-col">
+        <div class="card memory-card h-100">
+          <div class="card-img-top d-flex align-items-center justify-content-center" style="background-color: var(--bgcolor, #ffd9d9); position:relative;">
+            <img class="card-photo d-none" src="" alt="memory photo" style="width:100%;height:100%;object-fit:cover;position:absolute;left:0;top:0;" />
+            <i class="memory-icon bi bi-camera-fill" style="color: var(--iconcolor, #ff7a7a); font-size:4rem; z-index:1;"></i>
+          </div>
+          <div class="card-body d-flex flex-column">
+            <span class="badge-soft align-self-start mb-2"><i class="bi bi-calendar-heart me-1"></i> <span class="memory-date">DATE</span></span>
+            <h5 class="card-title fw-bold fs-5 memory-title">TITLE</h5>
+            <p class="card-text small memory-desc">DESCRIPTION</p>
+            <button class="btn btn-memory mt-3 w-100 relive-btn"
+                    data-bs-toggle="modal"
+                    data-bs-target="#memoryModal"
+                    data-memory-title="TITLE"
+                    data-memory-story="STORY">
+              <i class="bi bi-arrow-right-circle me-1"></i> relive moment
+            </button>
+
+            <div class="d-flex gap-2 mt-3">
+              <button class="btn btn-sm btn-outline-secondary flex-grow-1 edit-btn"><i class="bi bi-pencil"></i> Edit</button>
+              <button class="btn btn-sm btn-outline-danger delete-btn"><i class="bi bi-trash"></i> Delete</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </template>
 
     <!-- Bootstrap grid with moments (cards) – each moment card is a precious tile -->
     <div class="row g-4" id="moment-grid">
@@ -334,6 +368,56 @@
     <p class="text-center text-muted mt-4 fst-italic" style="font-size: 1.1rem;">💭 each card holds a story — click "relive moment" to open the memory.</p>
   </div>
 
+  <!-- ===== MODAL – ADD MEMORY ===== -->
+  <div class="modal fade" id="addMemoryModal" tabindex="-1" aria-labelledby="addMemoryModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header" style="background: #fff0f0; border-bottom: 2px dashed #fbc4c4;">
+          <h5 class="modal-title fw-bold" id="addMemoryModalLabel">Add a memory</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form id="addMemoryForm">
+          <div class="modal-body">
+            <div class="mb-3">
+              <label class="form-label">Title</label>
+              <input type="text" class="form-control" id="memoryTitleInput" placeholder="e.g. sunset beach" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Date</label>
+              <input type="date" class="form-control" id="memoryDateInput">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Short description</label>
+              <input type="text" class="form-control" id="memoryDescInput" placeholder="one-line description">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Story</label>
+              <textarea class="form-control" id="memoryStoryInput" rows="4" placeholder="Write the memory..." required></textarea>
+            </div>
+            <div class="row g-2">
+              <div class="col-12">
+                <label class="form-label">Image (optional)</label>
+                <input type="file" id="memoryImageInput" class="form-control" accept="image/*">
+                <input type="hidden" id="memoryImageData">
+                <div class="mt-2">
+                  <img id="memoryImagePreview" src="" class="img-fluid d-none" style="max-height:140px; object-fit:cover; border-radius:12px;" alt="preview">
+                </div>
+              </div>
+              <div class="col-4">
+                <label class="form-label">Color</label>
+                <input type="color" id="memoryColorInput" class="form-control form-control-color" value="#ffd9d9">
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-danger">Add memory</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
   <!-- ===== MODAL – MEMORY DETAIL ===== (Bootstrap 5) -->
   <div class="modal fade" id="memoryModal" tabindex="-1" aria-labelledby="memoryModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -410,6 +494,221 @@
         exploreBtn.addEventListener('click', function(e) {
           e.preventDefault();
           document.querySelector('#gallery')?.scrollIntoView({ behavior: 'smooth' });
+        });
+      }
+      
+      // ---------- 4. add-memory form handling, templating, edit & delete ----------
+      const addMemoryForm = document.getElementById('addMemoryForm');
+      const memoryTemplate = document.getElementById('memory-template');
+      const momentGrid = document.getElementById('moment-grid');
+      const memoryImageInput = document.getElementById('memoryImageInput');
+      const memoryImagePreview = document.getElementById('memoryImagePreview');
+      const memoryImageData = document.getElementById('memoryImageData');
+
+      function updateMemoryCount() {
+        const count = document.querySelectorAll('.moment-card-col').length;
+        if (memoryCountSpan) memoryCountSpan.textContent = count;
+      }
+
+      // helper to generate a simple unique id
+      function makeId() {
+        return 'm' + Date.now().toString(36) + Math.floor(Math.random()*1000).toString(36);
+      }
+
+      // show image preview and store data url in hidden input
+      if (memoryImageInput) {
+        memoryImageInput.addEventListener('change', function() {
+          const file = memoryImageInput.files && memoryImageInput.files[0];
+          if (!file) {
+            memoryImagePreview.src = '';
+            memoryImagePreview.classList.add('d-none');
+            memoryImageData.value = '';
+            return;
+          }
+          const reader = new FileReader();
+          reader.onload = function(ev) {
+            memoryImagePreview.src = ev.target.result;
+            memoryImagePreview.classList.remove('d-none');
+            memoryImageData.value = ev.target.result;
+          };
+          reader.readAsDataURL(file);
+        });
+      }
+
+      let editingCard = null;
+
+      function attachControlsToCard(colEl) {
+        const card = colEl.querySelector('.card');
+        if (!card) return;
+
+        // ensure card has an id
+        if (!card.dataset.memoryId) card.dataset.memoryId = makeId();
+
+        // add edit/delete if missing
+        const body = colEl.querySelector('.card-body');
+        if (!body) return;
+
+        if (!body.querySelector('.edit-btn')) {
+          const controls = document.createElement('div');
+          controls.className = 'd-flex gap-2 mt-3';
+          controls.innerHTML = '<button class="btn btn-sm btn-outline-secondary flex-grow-1 edit-btn"><i class="bi bi-pencil"></i> Edit</button><button class="btn btn-sm btn-outline-danger delete-btn"><i class="bi bi-trash"></i> Delete</button>';
+          body.appendChild(controls);
+        }
+
+        const editBtn = colEl.querySelector('.edit-btn');
+        const deleteBtn = colEl.querySelector('.delete-btn');
+
+        editBtn?.addEventListener('click', function() { openEditModalFor(colEl); });
+        deleteBtn?.addEventListener('click', function() { deleteCard(colEl); });
+      }
+
+      function openEditModalFor(colEl) {
+        const card = colEl.querySelector('.card');
+        editingCard = colEl;
+
+        // populate fields from card
+        const title = colEl.querySelector('.card-title')?.textContent || '';
+        const desc = colEl.querySelector('.card-text')?.textContent || '';
+        const dateText = colEl.querySelector('.badge-soft .memory-date')?.textContent || colEl.querySelector('.badge-soft')?.textContent || '';
+        const reliveBtn = colEl.querySelector('.relive-btn');
+        const story = reliveBtn?.getAttribute('data-memory-story') || '';
+        const color = colEl.querySelector('.card-img-top')?.style.backgroundColor || '';
+        const photo = colEl.querySelector('.card-photo');
+
+        document.getElementById('memoryTitleInput').value = title;
+        // try to parse date as ISO if possible, otherwise leave blank
+        try { document.getElementById('memoryDateInput').value = new Date(dateText).toISOString().slice(0,10); } catch(e) { document.getElementById('memoryDateInput').value = ''; }
+        document.getElementById('memoryDescInput').value = desc;
+        document.getElementById('memoryStoryInput').value = story;
+        document.getElementById('memoryColorInput').value = rgbToHex(color) || '#ffd9d9';
+
+        if (photo && photo.src) {
+          memoryImagePreview.src = photo.src;
+          memoryImagePreview.classList.remove('d-none');
+          memoryImageData.value = photo.src;
+        } else {
+          memoryImagePreview.src = '';
+          memoryImagePreview.classList.add('d-none');
+          memoryImageData.value = '';
+        }
+
+        // ensure the modal shows
+        const modal = new bootstrap.Modal(document.getElementById('addMemoryModal'));
+        modal.show();
+        // update submit button text
+        addMemoryForm.querySelector('button[type="submit"]').textContent = 'Save changes';
+      }
+
+      function deleteCard(colEl) {
+        colEl.remove();
+        updateMemoryCount();
+      }
+
+      function rgbToHex(rgb) {
+        if (!rgb) return null;
+        const m = rgb.match(/rgb\((\d+),\s*(\d+),\s*(\d+)\)/);
+        if (!m) return null;
+        return '#' + [1,2,3].map(i => parseInt(m[i]).toString(16).padStart(2,'0')).join('');
+      }
+
+      function createCard({title, date, desc, story, color, imageData}) {
+        const clone = memoryTemplate.content.cloneNode(true);
+        const col = clone.querySelector('.moment-card-col');
+        const card = col.querySelector('.card');
+        const cardImg = col.querySelector('.card-img-top');
+        const iconEl = col.querySelector('.memory-icon');
+        const photoEl = col.querySelector('.card-photo');
+        const titleEl = col.querySelector('.memory-title');
+        const descEl = col.querySelector('.memory-desc');
+        const dateEl = col.querySelector('.memory-date');
+        const reliveBtn = col.querySelector('.relive-btn');
+
+        if (!card.dataset.memoryId) card.dataset.memoryId = makeId();
+        if (cardImg) cardImg.style.backgroundColor = color || '#ffd9d9';
+
+        if (imageData) {
+          photoEl.src = imageData;
+          photoEl.classList.remove('d-none');
+          iconEl.classList.add('d-none');
+        } else {
+          photoEl.src = '';
+          photoEl.classList.add('d-none');
+          iconEl.classList.remove('d-none');
+        }
+
+        if (titleEl) titleEl.textContent = title || 'untitled';
+        if (descEl) descEl.textContent = desc || '';
+        if (dateEl) dateEl.textContent = date ? new Date(date).toLocaleDateString() : '';
+        if (reliveBtn) {
+          reliveBtn.setAttribute('data-memory-title', title || '');
+          reliveBtn.setAttribute('data-memory-story', story || '');
+        }
+
+        momentGrid.appendChild(col);
+        attachControlsToCard(col);
+        updateMemoryCount();
+      }
+
+      // attach edit/delete to all existing cards
+      document.querySelectorAll('#moment-grid .moment-card-col').forEach(function(col) {
+        attachControlsToCard(col);
+      });
+
+      if (addMemoryForm && memoryTemplate && momentGrid) {
+        addMemoryForm.addEventListener('submit', function(e) {
+          e.preventDefault();
+
+          const title = document.getElementById('memoryTitleInput').value.trim() || 'untitled';
+          const date = document.getElementById('memoryDateInput').value || '';
+          const desc = document.getElementById('memoryDescInput').value.trim() || '';
+          const story = document.getElementById('memoryStoryInput').value.trim() || '';
+          const color = document.getElementById('memoryColorInput').value || '#ffd9d9';
+          const imageData = memoryImageData.value || '';
+
+          if (editingCard) {
+            // update existing
+            const col = editingCard;
+            const cardImg = col.querySelector('.card-img-top');
+            const iconEl = col.querySelector('.memory-icon');
+            const photoEl = col.querySelector('.card-photo');
+            const titleEl = col.querySelector('.card-title');
+            const descEl = col.querySelector('.card-text');
+            const dateEl = col.querySelector('.badge-soft');
+            const reliveBtn = col.querySelector('.relive-btn');
+
+            if (cardImg) cardImg.style.backgroundColor = color;
+            if (imageData) {
+              photoEl.src = imageData;
+              photoEl.classList.remove('d-none');
+              iconEl.classList.add('d-none');
+            } else {
+              photoEl.src = '';
+              photoEl.classList.add('d-none');
+              iconEl.classList.remove('d-none');
+            }
+            if (titleEl) titleEl.textContent = title;
+            if (descEl) descEl.textContent = desc;
+            if (dateEl) dateEl.textContent = date ? new Date(date).toLocaleDateString() : '';
+            if (reliveBtn) {
+              reliveBtn.setAttribute('data-memory-title', title);
+              reliveBtn.setAttribute('data-memory-story', story);
+            }
+
+            // reset state
+            editingCard = null;
+            addMemoryForm.querySelector('button[type="submit"]').textContent = 'Add memory';
+          } else {
+            // create new card
+            createCard({ title, date, desc, story, color, imageData });
+          }
+
+          // reset form and close modal
+          addMemoryForm.reset();
+          memoryImagePreview.src = '';
+          memoryImagePreview.classList.add('d-none');
+          memoryImageData.value = '';
+          const addModal = bootstrap.Modal.getInstance(document.getElementById('addMemoryModal'));
+          if (addModal) addModal.hide();
         });
       }
       
